@@ -1,93 +1,86 @@
 # HCC-DEDG-SVM-Analysis
-**Identification of Discriminative Differentially Expressed Genes (DEDGs) in Hepatocellular Carcinoma Using SVM**
-Dataset: GSE214846
 
-**Project Overview**
 
-This project focuses on identifying Discriminative Differentially Expressed Genes (DEDGs) in hepatocellular carcinoma (HCC) using RNA-seq data and machine learning.
+# Identification of DEDGs in Hepatocellular Carcinoma (GSE214846) Using SVM
 
-The dataset used in this study:
+## 📌 Project Overview
 
-GSE214846
+This project identifies **Discriminative Differentially Expressed Genes (DEDGs)** in Hepatocellular Carcinoma (HCC). By combining statistical rigor (**DESeq2**) with the classification power of **Support Vector Machines (SVM)**, we identify genes that are both statistically significant and highly effective at distinguishing tumor from normal tissue.
 
-Disease: Hepatocellular Carcinoma
+### 🧬 Dataset: GSE214846
 
-Platform: RNA-seq
+* **Disease:** Hepatocellular Carcinoma (HCC)
+* **Platform:** RNA-seq (Illumina HiSeq 2500)
+* **Sample Size:** 65 HCC patients (65 Tumor + 65 Paired Adjacent Normal)
+* **Original Scope:** Developed a 5-Immune-Related Gene (IRG) survival signature.
 
-Samples: 65 HCC tumor samples with paired adjacent normal tissues
+---
 
-The original study developed a 5-IRG survival prediction model.
-In this work, we extend the analysis by integrating differential expression analysis with Support Vector Machine (SVM)-based feature selection to identify highly discriminative genes.
+## 🔬 Methodology
 
-Objectives
+The workflow integrates high-throughput statistical testing with machine learning classification to define the final DEDG list:
 
-Perform Differential Gene Expression (DEG) analysis between tumor and normal samples
+### 1️⃣ Differential Expression Analysis (DEG)
 
-Train an SVM classifier to distinguish tumor vs. normal samples
+* **Preprocessing:** Raw counts were normalized using Variance Stabilizing Transformation (VST) to handle heteroscedasticity.
+* **Tool:** `DESeq2`
+* **Statistical Filtering:** * Adjusted p-value (FDR) < 0.05 |log_2FoldChange| > 1
+* **Objective:** Identify genes with biologically significant expression shifts.
+* **Results:** Identified 6,758 DEGs representing the primary transcriptomic shift between HCC tumor and adjacent normal tissues.
 
-**Methodology**
+### 2️⃣ SVM-Based Feature Selection
 
-1️⃣ Differential Expression Analysis
+* **Algorithm:** Support Vector Machine (SVM) with a Radial Basis Function (RBF) Kernel.
+* **Hyperparameter Tuning:** A grid search was performed using the caret package to determine optimal parameters (C = 0.25, sigma = 0.0625) via 5-fold cross-validation.
+* **Validation Strategy:** 5-fold cross-validation was applied to ensure the model's generalizability and prevent overfitting.
 
-Tool: DESeq2
+### 3️⃣ Single-Gene Discriminative Screening
 
-Input: Raw RNA-seq count matrix
+Unlike standard feature selection, this pipeline evaluates the individual classification power of each DEG:
 
-Design formula: ~ condition
+* Each of the 6,758 DEGs was treated as an independent feature to train an SVM model.
+* **Metric:** Accuracy was calculated for every gene to determine its ability to categorize samples correctly.
 
-Filtering criteria:
+### 🎯 Final Identification (DEDGs)
 
-Adjusted p-value (FDR) < 0.05
+The final list of **Discriminative Differentially Expressed Genes (DEDGs)** was curated based on a dual-threshold:
 
-|log2FoldChange| > 1
+1. **Statistical Significance:** Must satisfy $DR < 0.05 and |log_2FC| > 1.
+2. **Classification Performance:** Must achieve an SVM Cross-Validation Accuracy >80%.
 
-Output:
+---
 
-List of significantly upregulated and downregulated DEGs
+## 📂 Repository Structure
 
-Volcano plot visualization
-
-Extract important discriminative genes from the trained model
-
-Identify overlapping genes between DEGs and SVM-selected genes (DEDGs)
-
-2️⃣ SVM-Based Discriminative Gene Identification
-
-Algorithm: Support Vector Machine (Linear Kernel)
-
-Package: e1071 / caret
-
-Data: Variance Stabilized Transformed (VST) counts
-
-Cross-validation: 5-fold
-
-Feature importance derived from SVM weight vector
-
-Genes that are:
-
-Statistically significant DEGs
-AND
-
-Strong contributors to classification
-
-→ Defined as Discriminative Differentially Expressed Genes (DEDGs)
-
-**Repository Structure**
-
+```text
 HCC_DEG_DEDG_SVM_GSE214846/
-│
 ├── data/
-│   ├── raw_counts.csv
-│   ├── metadata.csv
-│
+│   ├── raw_counts.csv           # Raw RNA-seq count matrix
+│   └── metadata.csv             # Sample info (Tumor vs Normal)
 ├── scripts/
-│
-│   ├── GSE214846 DEDGs Script.R
-│
+│   └── GSE214846_DEDGs_Script.R # Full pipeline: DESeq2 -> SVM -> DEDGs
 ├── results/
-|
-│   ├── DEG_results.csv
-│   ├── DEDGs_SVM_selected.csv
-│   ├── volcano_plot.png
-│  
+│   ├── DEG_results.csv          # Full list of differentially expressed genes
+│   ├── DEDGs_SVM_selected.csv   # Final list of discriminative genes
+│   └── volcano_plot.png         # Visualization of significance vs fold change
 └── README.md
+
+```
+
+---
+
+### Prerequisites
+
+Ensure you have **R (>= 4.0)** installed with the following packages:
+
+```r
+if (!require("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install("DESeq2")
+install.packages(c("e1071", "caret", "ggplot2", "pROC", "dplyr"))
+
+```
+
+
+
+
+**Would you like me to help you draft the "Results" section summary once you have the final number of DEDGs from your script?**
