@@ -81,6 +81,3 @@ install.packages(c("e1071", "caret", "ggplot2", "pROC", "dplyr"))
 ```
 
 
-
-
-**Would you like me to help you draft the "Results" section summary once you have the final number of DEDGs from your script?**
