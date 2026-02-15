@@ -58,7 +58,7 @@ HCC_DEG_DEDG_SVM_GSE214846/
 │   ├── raw_counts.csv           # Raw RNA-seq count matrix
 │   └── metadata.csv             # Sample info (Tumor vs Normal)
 ├── scripts/
-│   └── GSE214846_DEDGs_Script.R # Full pipeline: DESeq2 -> SVM -> DEDGs
+│   └── GSE214846 DEDGs Script.R # Full pipeline: DESeq2 -> SVM -> DEDGs
 ├── results/
 │   ├── DEG_results.csv          # Full list of differentially expressed genes
 │   ├── DEDGs_SVM_selected.csv   # Final list of discriminative genes
