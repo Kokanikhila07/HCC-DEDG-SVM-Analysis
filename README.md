@@ -56,13 +56,13 @@ The final list of **Discriminative Differentially Expressed Genes (DEDGs)** was 
 HCC_DEG_DEDG_SVM_GSE214846/
 ├── data/
 │   ├── raw_counts.csv           # Raw RNA-seq count matrix
-│   └── metadata.csv             # Sample info (Tumor vs Normal)
+│   └── metadata.txt            # Sample info (Tumor vs Normal)
 ├── scripts/
 │   └── GSE214846 DEDGs Script.R # Full pipeline: DESeq2 -> SVM -> DEDGs
 ├── results/
 │   ├── DEG_results.csv          # Full list of differentially expressed genes
 │   ├── DEDGs_SVM_selected.csv   # Final list of discriminative genes
-│   └── volcano_plot.png         # Visualization of significance vs fold change
+│   └── Volcano_plot.png         # Visualization of significance vs fold change
 └── README.md
 
 ```
