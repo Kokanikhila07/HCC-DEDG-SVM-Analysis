@@ -80,4 +80,10 @@ install.packages(c("e1071", "caret", "ggplot2", "pROC", "dplyr"))
 
 ```
 
+---
+
+# 👩‍💻 Author
+
+**Koka Nikhila Bhavani** | Bioinformatician
+
 
